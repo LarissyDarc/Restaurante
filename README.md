@@ -1,48 +1,69 @@
-# Restaurante - Landing Page
+# 🍽️ Restaurante — Página Inicial
 
-Projeto demo de uma Landing Page para restaurante usando React e Vite.
+## Identificação Acadêmica
 
-Descrição curta:
+* **Instituição:** Senac Taguatinga
+* **Curso:** Tecnico de desenvolvimento de Sistema
+* **Disciplina:** Projeto Entregador  
+* **Orientador:** Profº Hudson Neves
 
-Landing Page responsiva que apresenta o restaurante, menu de destaque e chamada para reservas. Implementada com React + Vite e preparada para publicação no GitHub Pages.
+## 📌 Sobre o Projeto
 
-Funcionalidades:
+Landing Page responsiva para restaurante, desenvolvida com **React + Vite**, apresentando o restaurante, menu de destaque e chamada para reservas.
 
-- Layout responsivo para mobile e desktop
-- Seções: Hero, Menu e Rodapé
-- Script de deploy para GitHub Pages (`npm run deploy`)
+## 🚀 Funcionalidades
 
-Como rodar localmente:
+* Layout responsivo para mobile e desktop
+* Seção Hero
+* Menu de destaque
+* Rodapé
+* Chamada para reservas
+* Publicação no GitHub Pages
+
+## 🛠️ Tecnologias
+
+* React
+* Vite
+* JavaScript
+* CSS
+* GitHub Pages
+
+## ▶️ Como Executar
 
 ```bash
 npm install
 npm run dev
 ```
 
-Como publicar no GitHub Pages:
-
-1. Crie um repositório no GitHub (ex: `site-restaurante`) e adicione o remote:
+## 🌐 Deploy
 
 ```bash
-git remote add origin https://github.com/<SEU_USUARIO>/site-restaurante.git
-git push -u origin main
-```
-
-2. Instale dependências e rode o script de deploy:
-
-```bash
-npm install
 npm run deploy
 ```
 
-Instruções rápidas para apresentação (resumo):
+## 📂 Estrutura
 
-- Abra a Landing Page localmente com `npm run dev` e mostre a adaptação para mobile (redimensione a janela).
-- Demonstre a estrutura do projeto: `src/App.jsx`, `src/styles.css`.
-- Aponte o comando de deploy (`npm run deploy`) e explique que publica os arquivos estáticos em `dist/`.
-- Destaque decisões de design e possíveis melhorias (ex.: adicionar fotos reais, formulário de contato, animações).
+```text
+src/
+├── App.jsx
+└── styles.css
+```
 
-Texto sugerido para descrição do repositório:
+## 👥 Equipe
 
-"Landing Page responsiva para um restaurante, construída com React + Vite. Projeto didático para apresentação de front-end e publicação em GitHub Pages."
+A ser definido pela equipe.
 
+## 📈 Status
+
+**Em desenvolvimento / MVP**
+
+## 🔮 Melhorias Futuras
+
+* Adicionar fotos reais dos pratos
+* Criar formulário de contato
+* Implementar sistema de reservas
+* Adicionar animações
+
+## 📄 Licença
+
+A ser definido pela equipe.
