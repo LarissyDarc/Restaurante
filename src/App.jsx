@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react'
 
+const RESTAURANT_NAME = 'Lumivora'
 const WHATSAPP_NUMBER = '5561999999999'
 
 const menuItems = [
@@ -26,9 +27,9 @@ const menuItems = [
 function Header() {
   return (
     <header className="site-header">
-      <a className="brand" href="#inicio" aria-label="Sabor e Arte, início">
-        <span className="brand-mark">S<span>&</span>A</span>
-        <span className="brand-name">Sabor <i>&</i> Arte</span>
+      <a className="brand" href="#inicio" aria-label={`${RESTAURANT_NAME}, início`}>
+        <span className="brand-mark">LV</span>
+        <span className="brand-name">{RESTAURANT_NAME}</span>
       </a>
       <nav className="main-nav" aria-label="Navegação principal">
         <a href="#cardapio">Cardápio</a>
@@ -121,22 +122,40 @@ function Visit() {
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [formError, setFormError] = useState('')
+  const [whatsAppUrl, setWhatsAppUrl] = useState('')
 
   function onChange(event) {
     setForm({ ...form, [event.target.name]: event.target.value })
   }
 
-  function onSubmit(event) {
+  async function onSubmit(event) {
     event.preventDefault()
+    setFormError('')
+    try {
+      const response = await fetch('/api/reservas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+      const result = await response.json()
+
+      if (!response.ok) {
+        setFormError(Object.values(result.errors || {}).join(' ' ) || result.error || 'Não foi possível registrar sua reserva.')
+        return
+      }
+
     const message = [
-      'Olá! Gostaria de fazer uma reserva no Sabor & Arte.',
-      `Nome: ${form.name}`,
-      `E-mail: ${form.email}`,
-      form.message ? `Detalhes: ${form.message}` : ''
+      `Olá! Gostaria de fazer uma reserva no ${RESTAURANT_NAME}.`,
+      `Nome: ${result.reservation.name}`,
+      `E-mail: ${result.reservation.email}`,
+      result.reservation.message ? `Detalhes: ${result.reservation.message}` : ''
     ].filter(Boolean).join('\n')
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
-    window.open(url, '_blank', 'noopener,noreferrer')
-    setSent(true)
+      setWhatsAppUrl(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`)
+      setSent(true)
+    } catch {
+      setFormError('Não foi possível conectar ao servidor. Tente novamente em instantes.')
+    }
   }
 
   return (
@@ -148,12 +167,16 @@ function Contact() {
       </div>
       <div className="reservation-form-wrap">
         {sent ? (
-          <p className="form-notice" role="status">Mensagem preparada no WhatsApp. Revise e envie na conversa para concluir seu pedido.</p>
+          <div className="form-notice" role="status">
+            <p>Pedido registrado. Para confirmar sua visita, envie os detalhes pelo WhatsApp.</p>
+            <a className="button" href={whatsAppUrl} target="_blank" rel="noopener noreferrer">Continuar no WhatsApp <span aria-hidden="true">↗</span></a>
+          </div>
         ) : (
           <form className="reservation-form" onSubmit={onSubmit}>
             <label>Seu nome<input name="name" autoComplete="name" placeholder="Como podemos chamar você?" required value={form.name} onChange={onChange} /></label>
             <label>Seu e-mail<input type="email" name="email" autoComplete="email" placeholder="voce@email.com" required value={form.email} onChange={onChange} /></label>
             <label>Conte um pouco mais<textarea name="message" placeholder="Data, horário ou ocasião especial" rows={3} value={form.message} onChange={onChange} /></label>
+            {formError && <p className="form-error" role="alert">{formError}</p>}
             <button className="button" type="submit">Enviar pedido <span aria-hidden="true">↗</span></button>
           </form>
         )}
@@ -163,9 +186,9 @@ function Contact() {
 }
 
 function WhatsAppButton() {
-  const message = encodeURIComponent('Olá! Gostaria de falar com o Restaurante Sabor & Arte.')
+  const message = encodeURIComponent(`Olá! Gostaria de falar com o Restaurante ${RESTAURANT_NAME}.`)
   return (
-    <a className="whatsapp-float" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`} target="_blank" rel="noopener noreferrer" aria-label="Fale com o Sabor & Arte pelo WhatsApp">
+    <a className="whatsapp-float" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`} target="_blank" rel="noopener noreferrer" aria-label={`Fale com o ${RESTAURANT_NAME} pelo WhatsApp`}>
       <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3a12.5 12.5 0 0 0-10.7 19L3.5 29l7.2-1.8A12.5 12.5 0 1 0 16 3Zm0 22.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-4.2 1.1 1.1-4.1-.3-.4A10.2 10.2 0 1 1 16 25.8Zm5.6-7.6c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.3 8.3 0 0 1-2.5-1.5 9.4 9.4 0 0 1-1.7-2.1c-.2-.3 0-.5.2-.7l.5-.6c.2-.2.2-.4.3-.6s0-.4 0-.6-.7-1.7-.9-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.2 1.4 3.4 2.4 3.7 5.8 5.1c.8.3 1.4.5 1.8.6.8.2 1.5.2 2.1.1.7-.1 1.8-.7 2.1-1.4s.3-1.3.2-1.4-.3-.2-.6-.4Z"/></svg>
       <span>WhatsApp</span>
     </a>
@@ -175,10 +198,10 @@ function WhatsAppButton() {
 function Footer() {
   return (
     <footer className="site-footer">
-      <a className="brand footer-brand" href="#inicio"><span className="brand-mark">S<span>&</span>A</span><span className="brand-name">Sabor <i>&</i> Arte</span></a>
+      <a className="brand footer-brand" href="#inicio"><span className="brand-mark">LV</span><span className="brand-name">{RESTAURANT_NAME}</span></a>
       <p>Feito com carinho. Servido com alegria.</p>
       <a href="#inicio">Voltar ao início ↑</a>
-      <small>© {new Date().getFullYear()} Restaurante Sabor & Arte</small>
+      <small>© {new Date().getFullYear()} Restaurante {RESTAURANT_NAME}</small>
     </footer>
   )
 }

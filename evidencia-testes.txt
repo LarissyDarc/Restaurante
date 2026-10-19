@@ -1,0 +1,23 @@
+
+> restaurante-landing@0.1.0 test
+> node --test server/*.test.cjs
+
+✔ CT08: creates a reservation and responds with HTTP 201 (521.6089ms)
+✔ CT09: rejects invalid reservation data with HTTP 422 (44.0891ms)
+✔ CT10: rejects malformed JSON with HTTP 400 (46.0333ms)
+✔ CT11: rejects unsupported methods with HTTP 405 (52.0506ms)
+✔ CT01: accepts a valid reservation and normalizes its fields (27.1081ms)
+✔ CT02: rejects a reservation without a name (2.3657ms)
+✔ CT03: rejects a missing or malformed email (2.5656ms)
+✔ CT04: rejects a name longer than 100 characters (2.9057ms)
+✔ CT05: rejects a message longer than 1000 characters (2.0778ms)
+✔ CT06: rejects payloads that are not objects (1.496ms)
+✔ CT07: creates a reservation with a stable status and timestamp (5.8927ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2035.183

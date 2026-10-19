@@ -1,7 +1,7 @@
 # Roteiro de Apresentação — Restaurante Landing
 
 1. Introdução (30s)
-   - Nome do projeto: Restaurante Sabor & Arte
+   - Nome do projeto: Restaurante Lumivora
    - Objetivo: apresentar uma Landing Page responsiva construída com React + Vite
 
 2. Demonstração ao vivo (2-3 min)
