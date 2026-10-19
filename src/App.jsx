@@ -132,6 +132,13 @@ function Contact() {
   async function onSubmit(event) {
     event.preventDefault()
     setFormError('')
+    const whatsappMessage = [
+      `Olá! Gostaria de fazer uma reserva no ${RESTAURANT_NAME}.`,
+      `Nome: ${form.name.trim()}`,
+      `E-mail: ${form.email.trim()}`,
+      form.message.trim() ? `Detalhes: ${form.message.trim()}` : ''
+    ].filter(Boolean).join('\n')
+
     try {
       const response = await fetch('/api/reservas', {
         method: 'POST',
@@ -145,16 +152,17 @@ function Contact() {
         return
       }
 
-    const message = [
-      `Olá! Gostaria de fazer uma reserva no ${RESTAURANT_NAME}.`,
-      `Nome: ${result.reservation.name}`,
-      `E-mail: ${result.reservation.email}`,
-      result.reservation.message ? `Detalhes: ${result.reservation.message}` : ''
-    ].filter(Boolean).join('\n')
+      const message = [
+        `Olá! Gostaria de fazer uma reserva no ${RESTAURANT_NAME}.`,
+        `Nome: ${result.reservation.name}`,
+        `E-mail: ${result.reservation.email}`,
+        result.reservation.message ? `Detalhes: ${result.reservation.message}` : ''
+      ].filter(Boolean).join('\n')
       setWhatsAppUrl(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`)
       setSent(true)
     } catch {
-      setFormError('Não foi possível conectar ao servidor. Tente novamente em instantes.')
+      setWhatsAppUrl(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`)
+      setSent(true)
     }
   }
 
@@ -168,7 +176,7 @@ function Contact() {
       <div className="reservation-form-wrap">
         {sent ? (
           <div className="form-notice" role="status">
-            <p>Pedido registrado. Para confirmar sua visita, envie os detalhes pelo WhatsApp.</p>
+            <p>Continue pelo WhatsApp para enviar seu pedido de reserva.</p>
             <a className="button" href={whatsAppUrl} target="_blank" rel="noopener noreferrer">Continuar no WhatsApp <span aria-hidden="true">↗</span></a>
           </div>
         ) : (
